@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: host-details
+  namespace: default
+data:
+  index.php: |-
+    <!DOCTYPE html>
+    <html>
+    <body>
+    <h1>Container info</h1>
+    <?php
+    $ifconf = shell_exec ("ifconfig");
+    $dns = shell_exec ("cat /etc/resolv.conf");
+    $env = shell_exec ("env | grep -e 'HOST\|KUB\|WEB_SVC' | sort");
+    echo "<pre>$ifconf</pre>";
+    echo "<pre>$dns</pre>";
+    echo "<pre>$env</pre>";
+    ?>
+    </body>
+    </html>

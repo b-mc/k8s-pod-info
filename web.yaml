@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      volumes:
+        - name: php-index
+          configMap:
+            name: host-details
+      containers:
+      - name: web-01
+        image: webdevops/php-apache
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - name: php-index
+            mountPath: /app/index.php
+            subPath: index.php
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  ports:
+    - name: http
+      nodePort: 30001
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: server
+  sessionAffinity: None
+  type: NodePort
