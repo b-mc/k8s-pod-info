@@ -20,7 +20,7 @@ spec:
             name: host-details
       containers:
       - name: web-01
-        image: webdevops/php-apache
+        image: webdevops/php-apache:8.2-alpine
         ports:
         - containerPort: 80
         volumeMounts:
