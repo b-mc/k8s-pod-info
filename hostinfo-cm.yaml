@@ -7,15 +7,30 @@ data:
   index.php: |-
     <!DOCTYPE html>
     <html>
+
     <body>
-    <h1>Container info</h1>
-    <?php
-    $ifconf = shell_exec ("ifconfig");
-    $dns = shell_exec ("cat /etc/resolv.conf");
-    $env = shell_exec ("env | grep -e 'HOST\|KUB\|WEB_SVC' | sort");
-    echo "<pre>$ifconf</pre>";
-    echo "<pre>$dns</pre>";
-    echo "<pre>$env</pre>";
-    ?>
+        <h1>k8s pod info</h1>
+        <table style='font-family:"Courier New", Courier, monospace; font-size:20; width:35%'>
+            <tr>
+                <td>Pod hostname</td>
+                <td><?=shell_exec("hostname");?></td>
+            </tr>
+            <tr>
+                <td>Pod IP address</td>
+                <td><?=$ip = shell_exec("ip a | awk '(NR==7) { print $2 }'");?></td>
+            </tr>
+            <tr>
+                <td>DNS</td>
+                <td><?=$dns = shell_exec("cat /etc/resolv.conf | awk '(NR==1) { print $2 }'");?></td>
+            </tr>
+            <tr>
+                <td>The service IP and port</td>
+                <td><?=$svc_ip = shell_exec("printenv WEB_SERVICE_HOST WEB_SERVICE_PORT | tr '\n' ' '");?></td>
+            </tr>
+            <tr>
+                <td>k8s cluster service IP and port</td>
+                <td><?=$k8s = shell_exec("printenv KUBERNETES_SERVICE_HOST KUBERNETES_SERVICE_PORT | tr '\n' ' '");?></td>
+            </tr>
+        </table>
     </body>
     </html>
