@@ -1,6 +1,6 @@
-# Simple k8s service
-The http server displays the IP address and the environment vars of the container serving the current request.
-Suitable for educational purposes. It's helped me to understand how services work when learning k8s. It also can be helpful when understanding the difference between kubenet and Azure CNI network plugin in Azure Kubernetes Service.
+# k8s pod info
+The http server displays the IP address and the selected environment vars of the container serving the request.
+Suitable for educational purposes e.g. verifying k8s load balancing concepts hands-on.
 
 ## Components
 * config map
@@ -9,13 +9,15 @@ Suitable for educational purposes. It's helped me to understand how services wor
 
 ## Deploying
 ```
-kubectl apply -f hostinfo-cm.yaml
-kubectl apply -f web.yaml
+kubectl apply -f cm-indexphp.yaml
+kubectl apply -f k8s-pod-info.yaml
 ```
 
-## Example usage
+## Usage
 On a box which can access the cluster:
+```bash
+watch -n1 "curl -s IP:30001"
 ```
-watch -n1 "curl -s 10.240.0.4:30001"
-```
-where the IP is your NodePort.
+where `IP` is the address of one of the nodes.
+
+In the browser you might need to use Ctrl+F5 to bypass caching.
