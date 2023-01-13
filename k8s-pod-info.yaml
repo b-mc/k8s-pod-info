@@ -1,37 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: podinfo
   labels:
-    app: server
+    app: webserver
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: server
+      app: webserver
   template:
     metadata:
       labels:
-        app: server
+        app: webserver
     spec:
       volumes:
-        - name: php-index
+        - name: cm-indexphp
           configMap:
-            name: host-details
+            name: index.php
       containers:
-      - name: web-01
+      - name: webserver
         image: webdevops/php-apache:8.2-alpine
         ports:
         - containerPort: 80
         volumeMounts:
-          - name: php-index
+          - name: cm-indexphp
             mountPath: /app/index.php
             subPath: index.php
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: web
+  name: podinfo
 spec:
   ports:
     - name: http
@@ -40,6 +40,6 @@ spec:
       targetPort: 80
       protocol: TCP
   selector:
-    app: server
+    app: webserver
   sessionAffinity: None
   type: NodePort

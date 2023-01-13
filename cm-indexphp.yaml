@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: host-details
+  name: index.php
   namespace: default
 data:
   index.php: |-
@@ -25,7 +25,7 @@ data:
             </tr>
             <tr>
                 <td>The service IP and port</td>
-                <td><?=$svc_ip = shell_exec("printenv WEB_SERVICE_HOST WEB_SERVICE_PORT | tr '\n' ' '");?></td>
+                <td><?=$svc_ip = shell_exec("printenv PODINFO_SERVICE_HOST PODINFO_SERVICE_PORT | tr '\n' ' '");?></td>
             </tr>
             <tr>
                 <td>k8s cluster service IP and port</td>
