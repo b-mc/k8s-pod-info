@@ -20,11 +20,11 @@ data:
                 <td><?=$ip = shell_exec("ip a | awk '(NR==7) { print $2 }'");?></td>
             </tr>
             <tr>
-                <td>DNS</td>
-                <td><?=$dns = shell_exec("cat /etc/resolv.conf | awk '(NR==1) { print $2 }'");?></td>
+                <td>Pod DNS</td>
+                <td><?=$dns = shell_exec("awk '/nameserver/ { print $2 }' /etc/resolv.conf");?></td>
             </tr>
             <tr>
-                <td>The service IP and port</td>
+                <td>This service IP and port</td>
                 <td><?=$svc_ip = shell_exec("printenv PODINFO_SERVICE_HOST PODINFO_SERVICE_PORT | tr '\n' ' '");?></td>
             </tr>
             <tr>
